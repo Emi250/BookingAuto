@@ -16,7 +16,10 @@ if uploaded_file:
 st.subheader("📝 Datos de la reserva")
 nombre = st.text_input("Nombre del huésped")
 usd = st.number_input("Precio total en USD", value=0.0, format="%.2f")
-telefono = st.text_input("Número de WhatsApp del huésped (sin espacios, ej: 541155...)")
+telefono_crudo = st.text_input("Número de WhatsApp del huésped (ej: +54 11 5555 5555)")
+
+# Limpiar número: eliminar espacios y "+"
+telefono = telefono_crudo.replace(" ", "").replace("+", "")
 
 # Obtener cotización actual USD → ARS desde exchangerate.host
 def get_usd_ars():
@@ -42,6 +45,11 @@ Días antes de que lleguen me voy a comunicar a este Whatsapp para brindarles to
 """
 
 st.text_area("Mensaje generado", value=mensaje, height=200)
+
+# Botón para copiar
+st.button("📋 Copiar mensaje", on_click=lambda: st.session_state.update({"_clipboard": mensaje}))
+
+# Mostrar cotización
 st.markdown(f"📈 Cotización usada: **1 USD = {cotizacion:.2f} ARS**")
 
 # Link a WhatsApp
