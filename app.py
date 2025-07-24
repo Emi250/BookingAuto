@@ -23,7 +23,7 @@ telefono = ""
 # Procesar imagen si fue subida
 if uploaded_file:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Captura subida", use_column_width=True)
+    st.image(image, caption="Captura subida", use_container_width=True)
     texto = pytesseract.image_to_string(image)
 
     # Extraer datos del texto con expresiones regulares
