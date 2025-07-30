@@ -53,7 +53,7 @@ telefono = telefono_crudo.replace(" ", "").replace("+", "")
 # Cotización desde exchangerate.host
 # Cotización desde Monedapi.ar (Dólar Blue)
 def get_usd_ars():
-    url = "https://api.monedapi.com/v1/cotizaciones/blue"
+    url = "https://monedapi.ar/api/usd/bna"
     try:
         response = requests.get(url)
         data = response.json()
