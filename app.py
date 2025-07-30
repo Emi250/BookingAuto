@@ -50,25 +50,13 @@ telefono_crudo = st.text_input("Número de WhatsApp del huésped (ej: +54 11 555
 # Limpiar teléfono
 telefono = telefono_crudo.replace(" ", "").replace("+", "")
 
-# Cotización desde exchangerate.host
-# Cotización desde Monedapi.ar (Dólar Blue)
-# Cotización desde Monedapi.ar (Dólar oficial BNA)
-def get_usd_ars():
-    url = "https://monedapi.ar/api/usd/bna"
-    try:
-        resp = requests.get(url, timeout=5)
-        resp.raise_for_status()
-        data = resp.json()
-        return data["venta"]
-    except requests.exceptions.RequestException as e:
-        print("Error de red al obtener cotización:", e)
-    except (ValueError, KeyError) as e:
-        print("Error de formato o clave faltante:", e)
-    return 1300  # Valor por defecto si falla todo
+# Cotización manual
+st.subheader("💱 Cotización del dólar")
+cotizacion = st.number_input("Valor del dólar (ARS)", value=1400.0, step=10.0)
 
-cotizacion = get_usd_ars()
 ars = round(usd * cotizacion)
 ars_formateado = f"{ars:,.0f}".replace(",", ".")
+
 
 # Mensaje
 st.subheader("💬 Mensaje personalizado")
