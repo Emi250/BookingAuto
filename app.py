@@ -52,14 +52,19 @@ telefono = telefono_crudo.replace(" ", "").replace("+", "")
 
 # Cotización desde exchangerate.host
 # Cotización desde Monedapi.ar (Dólar Blue)
+# Cotización desde Monedapi.ar (Dólar oficial BNA)
 def get_usd_ars():
     url = "https://monedapi.ar/api/usd/bna"
     try:
-        response = requests.get(url)
-        data = response.json()
+        resp = requests.get(url, timeout=5)
+        resp.raise_for_status()
+        data = resp.json()
         return data["venta"]
-    except:
-        return 1300  # fallback en caso de error
+    except requests.exceptions.RequestException as e:
+        print("Error de red al obtener cotización:", e)
+    except (ValueError, KeyError) as e:
+        print("Error de formato o clave faltante:", e)
+    return 1300  # Valor por defecto si falla todo
 
 cotizacion = get_usd_ars()
 ars = round(usd * cotizacion)
