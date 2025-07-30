@@ -51,14 +51,15 @@ telefono_crudo = st.text_input("Número de WhatsApp del huésped (ej: +54 11 555
 telefono = telefono_crudo.replace(" ", "").replace("+", "")
 
 # Cotización desde exchangerate.host
+# Cotización desde Monedapi.ar (Dólar Blue)
 def get_usd_ars():
-    access_key = "aceb542a130908b4fe0dd21db2e7c4ab"
-    url = f"https://api.exchangerate.host/live?access_key={access_key}&source=USD&currencies=ARS"
+    url = "https://api.monedapi.com/v1/cotizaciones/blue"
     try:
-        r = requests.get(url)
-        return r.json()["quotes"]["USDARS"]
+        response = requests.get(url)
+        data = response.json()
+        return data["venta"]
     except:
-        return 1400
+        return 1300  # fallback en caso de error
 
 cotizacion = get_usd_ars()
 ars = round(usd * cotizacion)
